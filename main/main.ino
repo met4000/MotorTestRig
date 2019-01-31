@@ -1,8 +1,12 @@
 #include "curtinfrc/Pin.h"
+
 #include "BinaryInput.h"
 #include "DFRobot/LCDButtonInstance.h"
 
-#define DEBUG (bool)1
+#include "curtinfrc/PWMController.h"
+
+
+#define DEBUG true
 
 
 using namespace curtinfrc;
@@ -14,6 +18,8 @@ LCDShield *lcdShield;
 BinaryInput *forwardButton;
 BinaryInput *reverseButton;
 
+PWMController *motorController;
+
 
 void setup() {
   #if DEBUG
@@ -24,6 +30,8 @@ void setup() {
 
   forwardButton = new LCDButtonInstance(*lcdShield, btnUP);
   reverseButton = new LCDButtonInstance(*lcdShield, btnDOWN);
+
+  motorController = new PWMController(Pin9);
 }
 
 void loop() {
@@ -34,4 +42,7 @@ void loop() {
   Serial.println(reverseButton->Get());
   Serial.println();
   #endif
+
+  if (forwardButton->Get()) motorController->Set(1);
+  else if (reverseButton->Get()) motorController->Set(-1);
 }

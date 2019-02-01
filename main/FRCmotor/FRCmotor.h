@@ -67,7 +67,6 @@ FRCmotor::FRCmotor(int pin) {}
 #endif
 
 void FRCmotor::Set (double power) {
-  power /= 100;
   value = 47 + power * 27;
 
   if (value > 74) value = 74;

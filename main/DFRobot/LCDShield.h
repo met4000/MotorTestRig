@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../curtinfrc/Pin.h"
+#include "../Pin.h"
 
 namespace DFRobot {
   enum LCDButton {
@@ -19,7 +19,7 @@ namespace DFRobot {
 
   class LCDShield {
   public:
-    LCDShield(curtinfrc::AnalogPin port, LCDBoardVersion boardVersion = v1_0) : _port(port.GetPort()), _version(boardVersion) {};
+    LCDShield(AnalogPin port, LCDBoardVersion boardVersion = v1_0) : _port(port.GetPort()), _version(boardVersion) {};
 
     int GetPort() { return _port; };
     LCDButton GetRawButton();

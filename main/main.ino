@@ -9,6 +9,7 @@
 #include "Potentiometer.h"
 
 #include "PWMController.h"
+#include "ServoMotor.h"
 
 
 #define DEBUG true
@@ -25,6 +26,7 @@ BinaryInput *reverseButton;
 DoubleInput *speedInput;
 
 PWMController *motorController;
+ServoMotor *servo;
 
 
 void setup() {
@@ -41,7 +43,8 @@ void setup() {
 
   speedInput = new Potentiometer(PinA0);
 
-  motorController = new PWMController(Pin9);
+  motorController = new PWMController(Pin6);
+  servo = new ServoMotor(Pin11);
 }
 
 void loop() {
@@ -53,16 +56,22 @@ void loop() {
   #endif
 
   double power = speedInput->Get();
-  power *= fabs(power);
+  // power *= fabs(power);
 
   #if DEBUG
   Serial.print("Speed: ");
   Serial.println(power);
   #endif
 
-  if (forwardButton->Get()) motorController->Set(power);
-  else if (reverseButton->Get()) motorController->Set(-power);
-  else motorController->Set(0);
+  if (forwardButton->Get()) {
+    motorController->Set(power);
+    // servo->SetAngle((int)(180 * power));
+  } else if (reverseButton->Get()) {
+    motorController->Set(-power);
+    // servo->SetAngle(5);
+  } else {
+    motorController->Set(0);
+  }
 
   #if DEBUG
   Serial.println();
